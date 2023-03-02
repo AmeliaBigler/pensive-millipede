@@ -5,7 +5,7 @@ const {
   readFromFile,
   readAndAppend,
   writeToFile,
-} = require('./helpers/fsUtils');
+} = require('./public/helpers/fsUtils.js');
 
 // const { ppid } = require('process');
 // TODO: create api const?
@@ -37,19 +37,20 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
   console.log(req.body);
 
-  const { noteTitle, noteText } = req.body;
+  // destructure assignment of object
+  const { title, text } = req.body;
 
-  if (req.body) {
+  if (req.body.title) {
     const newNote = {
-      noteTitle,
-      noteText,
+      title,
+      text,
       id: uuidv4(),
     };
 
     readAndAppend(newNote, './db/db.json');
     res.json(`Note added successfully 🚀`);
   } else {
-    res.error('Error in adding note');
+    res.json('Error in adding note');
   }
 });
 
